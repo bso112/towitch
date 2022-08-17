@@ -1,0 +1,9 @@
+apply plugin: "com.diffplug.spotless"
+spotless {
+    kotlin {
+        ktlint()
+        trimTrailingWhitespace()
+        indentWithTabs()
+        endWithNewline()
+    }
+}
