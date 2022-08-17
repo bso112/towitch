@@ -1,4 +1,4 @@
-package com.manta.tiwtch
+package com.manta.tiwtch.ui.main
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -11,36 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.manta.tiwtch.ui.theme.TiwtchTheme
+import dagger.hilt.android.AndroidEntryPoint
 
-//twitch token: boxgcgv7wxdd55tytip9pbt7r2u4fk
-//twitch client id: elpvgbj4uevz61bh2v96scwcen7q5b
-
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             TiwtchTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-                    Greeting("Android")
-                }
+                MainScreen()
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    TiwtchTheme {
-        Greeting("Android")
-    }
-}

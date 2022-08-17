@@ -8,6 +8,10 @@ plugins {
 apply from: '../dependencies.gradle'
 apply from: '../spotless.gradle'
 
+def apiKeyPropertiesFile = rootProject.file("apikey.properties")
+def apiKeyProperties = new Properties()
+apiKeyProperties.load(new FileInputStream(apiKeyPropertiesFile))
+
 android {
     compileSdk 32
 
@@ -22,6 +26,13 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+
+        buildConfigField "String", "TWITCH_SECRET", apiKeyProperties['TWITCH_SECRET']
+        buildConfigField "String", "TWITCH_CLIENT_ID", apiKeyProperties['TWITCH_CLIENT_ID']
+        buildConfigField "String", "TWITCH_API", '"https://api.twitch.tv"'
+        buildConfigField "String", "TWITCH_ID", '"https://id.twitch.tv"'
+
+
     }
 
     buildTypes {
@@ -67,7 +78,7 @@ dependencies {
     kaptAndroidTest "com.google.dagger:hilt-compiler:$versions.hiltVersion"
 
     // logging
-    implementation "com.jakewharton.timber:timber:$versions.timberVersion"
+//    implementation "com.jakewharton.timber:timber:$versions.timberVersion"
 
     //compose
     implementation "androidx.compose.foundation:foundation:$versions.composeVersion"
