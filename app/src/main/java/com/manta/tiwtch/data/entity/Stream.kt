@@ -28,19 +28,8 @@ import com.google.gson.annotations.SerializedName
 //    "cursor": "eyJiIjp7IkN1cnNvciI6ImV5SnpJam8zT0RNMk5TNDBORFF4TlRjMU1UY3hOU3dpWkNJNlptRnNjMlVzSW5RaU9uUnlkV1Y5In0sImEiOnsiQ3Vyc29yIjoiZXlKeklqb3hOVGs0TkM0MU56RXhNekExTVRZNU1ESXNJbVFpT21aaGJITmxMQ0owSWpwMGNuVmxmUT09In19"
 //}
 //}
+
 data class Stream(
-    @SerializedName("data")
-    val data: List<StreamData>,
-    @SerializedName("pagination")
-    val pagination: Pagination
-)
-
-data class Pagination(
-    @SerializedName("cursor")
-    val cursor: String
-)
-
-data class StreamData(
     @SerializedName("id")
     val id: String,
     @SerializedName("title")

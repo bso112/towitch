@@ -10,5 +10,10 @@ class MainRepository @Inject constructor(
 ) {
     suspend fun fetchAppToken() = twitchIdService.fetchAppToken()
     suspend fun fetchStreams() = twitchApiService.fetchStreams(preferenceHelper.twitchAppToken)
-    suspend fun fetchFollowedStreams() = twitchApiService.fetchFollowedStreams(preferenceHelper.twitchUserToken)
+    suspend fun fetchFollowedStreams(userId: String) =
+        twitchApiService.fetchFollowedStreams(preferenceHelper.twitchUserToken, userId)
+
+    suspend fun fetchUsers() = twitchApiService.fetchUsers(preferenceHelper.twitchUserToken)
+    suspend fun fetchFollowings(userId: String) =
+        twitchApiService.fetchFollowings(preferenceHelper.twitchUserToken, userId)
 }

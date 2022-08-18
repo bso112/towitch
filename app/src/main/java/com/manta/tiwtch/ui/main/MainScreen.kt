@@ -16,12 +16,12 @@ fun MainScreen(preferenceHelper: PreferenceHelper) {
     val navController = rememberNavController()
     val navigator: Navigator = { navController.navigate(it) }
 
-    val initialRoute = if(preferenceHelper.twitchAppToken.isEmpty() || preferenceHelper.twitchUserToken.isEmpty()){
+    val initialRoute = if(preferenceHelper.twitchAppToken.isBlank() || preferenceHelper.twitchUserToken.isBlank()){
         NavScreen.Login.route
     }else{
         NavScreen.Home.route
     }
-    NavHost(navController = navController, startDestination = initialRoute) {
+    NavHost(navController = navController, startDestination =  NavScreen.Login.route) {
         composable(
             NavScreen.Home.route,
             deepLinks = listOf(navDeepLink { uriPattern = "https://tiwtch.page.link/home" })

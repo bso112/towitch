@@ -3,11 +3,8 @@ package com.manta.tiwtch.ui.home
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -17,13 +14,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.manta.tiwtch.common.HCenter
 import com.manta.tiwtch.common.HSpacer
 import com.manta.tiwtch.common.VSpacer
-import com.manta.tiwtch.data.entity.StreamData
+import com.manta.tiwtch.data.entity.Stream
+import com.manta.tiwtch.ui.theme.TiwtchTheme
+import com.manta.tiwtch.ui.theme.content1
+import com.manta.tiwtch.ui.theme.title
 import com.manta.tiwtch.ui.theme.white
 import com.skydoves.landscapist.glide.GlideImage
 
@@ -31,6 +31,9 @@ import com.skydoves.landscapist.glide.GlideImage
 fun HomeScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
     val followedStreams = mainViewModel.followedStream.collectAsState()
     val recommendedStreams = mainViewModel.recommendedStream.collectAsState()
+    val user = mainViewModel.user.collectAsState()
+    val followings = mainViewModel.followings.collectAsState()
+//    val offLines = mainViewModel.offlineFollowings.collectAsState()
 
     Column(
         modifier = Modifier
@@ -38,9 +41,10 @@ fun HomeScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+        Text(user.value.name)
         VSpacer(dp = 100.dp)
         Column(modifier = Modifier.padding(all = 20.dp)) {
-            Text("생방송 채널", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text("생방송 채널", fontSize = title, fontWeight = FontWeight.Bold)
             VSpacer(dp = 20.dp)
             Column(
                 modifier = Modifier.padding(horizontal = 15.dp),
@@ -51,7 +55,7 @@ fun HomeScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
                 }
             }
             VSpacer(dp = 20.dp)
-            Text("추천 채널", fontSize = 18.sp, fontWeight = FontWeight.Bold)
+            Text("추천 채널", fontSize = title, fontWeight = FontWeight.Bold)
             VSpacer(dp = 20.dp)
             Column(
                 modifier = Modifier.padding(horizontal = 15.dp),
@@ -61,22 +65,41 @@ fun HomeScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
                     StreamItem(stream = stream)
                 }
             }
-
+            Text("오프라인", fontSize = title, fontWeight = FontWeight.Bold)
+//            Column {
+//                offLines.value.take(10).forEach { following ->
+//                    Row {
+//                        GlideImage(
+//                            imageModel = following.profileImageUrl,
+//                            contentScale = ContentScale.Crop,
+//                            modifier = Modifier
+//                                .width(30.dp)
+//                                .height(30.dp)
+//                        )
+//                        HSpacer(dp = 5.dp)
+//                        Column {
+//                            Text(following.name, fontSize = content1, fontWeight = FontWeight.Bold)
+//                        }
+//                    }
+//
+//                }
+//
+//            }
         }
     }
 
 }
 
 @Composable
-fun StreamItem(stream: StreamData) {
+fun StreamItem(stream: Stream) {
     Row {
         Box {
             GlideImage(
                 imageModel = stream.getSizedThumbnailUrl(200, 100),
-                contentScale = ContentScale.Crop,
+                contentScale = ContentScale.FillWidth,
                 modifier = Modifier
-                    .width(120.dp)
-                    .height(60.dp)
+                    .width(100.dp)
+                    .height(50.dp)
             )
             HCenter(
                 modifier = Modifier
@@ -89,7 +112,7 @@ fun StreamItem(stream: StreamData) {
                 HSpacer(dp = 3.dp)
                 Text(
                     stream.viewerCount.toString(),
-                    fontSize = 12.sp,
+                    fontSize = content1,
                     fontWeight = FontWeight.Bold,
                     color = white
                 )
@@ -98,11 +121,21 @@ fun StreamItem(stream: StreamData) {
         }
         HSpacer(dp = 15.dp)
         Column {
-            Text(text = stream.userName, fontWeight = FontWeight.Bold)
+            Text(text = stream.userName, fontSize = content1, fontWeight = FontWeight.Bold)
             VSpacer(dp = 5.dp)
-            Text(text = stream.title, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(
+                text = stream.title,
+                fontSize = content1,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
             VSpacer(dp = 5.dp)
-            Text(text = stream.gameName, maxLines = 1, overflow = TextOverflow.Ellipsis)
+            Text(
+                text = stream.gameName,
+                fontSize = content1,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis
+            )
             VSpacer(dp = 5.dp)
 //            stream.tagIds.forEach { tag ->
 //                Text(text = tag.slice(0..5), modifier = Modifier.background(gray_tag, shape = RoundedCornerShape(8.dp)))
@@ -111,3 +144,31 @@ fun StreamItem(stream: StreamData) {
     }
 }
 
+
+@Preview
+@Composable
+fun StreamItemPreview() {
+    TiwtchTheme {
+        StreamItem(
+            stream = Stream(
+                "0",
+                "테스트",
+                1000,
+                "https://ichef.bbci.co.uk/news/800/cpsprodpb/17805/production/_105016269_roxy1.jpg.webp",
+                "Manta",
+                "",
+                emptyList(),
+                "발로란트"
+            )
+        )
+    }
+}
+
+
+@Preview
+@Composable
+fun HomeScreenPreview() {
+    TiwtchTheme {
+        HomeScreen()
+    }
+}
