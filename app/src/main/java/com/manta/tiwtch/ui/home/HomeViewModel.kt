@@ -29,7 +29,7 @@ class HomeViewModel @Inject constructor(
 
     val followedStream: StateFlow<List<Stream>> = stateFlow(initialValue = emptyList()) {
         user.collect { user ->
-            if(user == mockUser) return@collect
+            if (user == mockUser) return@collect
             mainRepository.fetchFollowedStreams(user.id).onSuccess { stream ->
                 emit(stream.data)
             }
@@ -42,9 +42,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-     val followings: StateFlow<List<User>> = stateFlow(initialValue = emptyList()) {
+    val followings: StateFlow<List<User>> = stateFlow(initialValue = emptyList()) {
         user.collect { user ->
-            if(user == mockUser) return@collect
+            if (user == mockUser) return@collect
             mainRepository.fetchFollowings(user.id).onSuccess { followedList ->
                 emit(followedList.data.map { User(it.id, it.name, "") })
             }
@@ -53,7 +53,7 @@ class HomeViewModel @Inject constructor(
 
     val offlineFollowings: StateFlow<List<User>> =
         followedStream.combine(followings) { streamList, followings ->
-            val onlineFollowings = streamList.map { it.id }
-            followings.filter { following -> !onlineFollowings.contains(following.id) }
+            val onlineFollowings = streamList.map { it.userName }
+            followings.filter { following -> !onlineFollowings.contains(following.name) }
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
 }
