@@ -2,16 +2,12 @@ package com.manta.tiwtch.ui.home
 
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.manta.tiwtch.common.Consts
 import com.manta.tiwtch.data.MainRepository
 import com.manta.tiwtch.data.entity.StreamData
+import com.manta.tiwtch.utils.stateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,13 +16,13 @@ class HomeViewModel @Inject constructor(
     private val preferences: SharedPreferences
 ) : ViewModel() {
 
-    val streams: StateFlow<List<StreamData>> = flow {
+    val streams: StateFlow<List<StreamData>> = stateFlow(initialValue =  emptyList()) {
         authenticate()
         val response = mainRepository.fetchStreams()
         if (response.isSuccessful) {
             response.body()?.let { emit(it.data) }
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), emptyList())
+    }
 
     suspend fun authenticate() {
         val response = mainRepository.authenticate()
