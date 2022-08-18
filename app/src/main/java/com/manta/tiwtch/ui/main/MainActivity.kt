@@ -1,5 +1,6 @@
 package com.manta.tiwtch.ui.main
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -15,6 +16,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+
+    }
+    //https://tiwtch.page.link/#access_token=ugdulgd0je9fkjxxpqrpudlpt2ltte&scope=user%3Aread%3Afollows&state=40907809-282f-43af-a68c-564bb1f9a557&token_type=bearer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {

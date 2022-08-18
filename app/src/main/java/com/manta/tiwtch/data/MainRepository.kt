@@ -8,4 +8,5 @@ class MainRepository @Inject constructor(
 ) {
     suspend fun authenticate() = twitchIdService.authenticate()
     suspend fun fetchStreams() = twitchApiService.fetchStreams()
+    suspend fun fetchFollowedStreams() = twitchApiService.fetchFollowedStreams()
 }

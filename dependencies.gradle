@@ -44,4 +44,7 @@ ext.versions = [
         junitVersion            : '4.13.2',
         androidxTestJunit       : '1.1.2-rc01',
 
+        //glide
+        landscapistVersion      : '1.6.1',
+
 ]

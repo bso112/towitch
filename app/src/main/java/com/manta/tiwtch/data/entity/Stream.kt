@@ -46,5 +46,20 @@ data class StreamData(
     @SerializedName("title")
     val title: String,
     @SerializedName("viewer_count")
-    val viewerCount: Int
-)
+    val viewerCount: Int,
+    @SerializedName("thumbnail_url")
+    val thumbnailUrl: String,
+    @SerializedName("user_name")
+    val userName: String,
+    @SerializedName("type")
+    val type: String,
+    @SerializedName("tag_ids")
+    val tagIds: List<String>,
+    @SerializedName("game_name")
+    val gameName : String
+) {
+    fun getSizedThumbnailUrl(width: Int, height: Int) : String {
+        return thumbnailUrl.replace("{width}", width.toString())
+            .replace("{height}", width.toString())
+    }
+}

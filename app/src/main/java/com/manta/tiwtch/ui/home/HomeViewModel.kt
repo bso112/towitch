@@ -3,6 +3,7 @@ package com.manta.tiwtch.ui.home
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import com.manta.tiwtch.common.Consts
+import com.manta.tiwtch.common.PreferenceHelper
 import com.manta.tiwtch.data.MainRepository
 import com.manta.tiwtch.data.entity.StreamData
 import com.manta.tiwtch.utils.stateFlow
@@ -13,23 +14,25 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val mainRepository: MainRepository,
-    private val preferences: SharedPreferences
+    private val preferenceHelper: PreferenceHelper
 ) : ViewModel() {
 
     val streams: StateFlow<List<StreamData>> = stateFlow(initialValue =  emptyList()) {
         authenticate()
-        val response = mainRepository.fetchStreams()
+        val response = mainRepository.fetchFollowedStreams()
         if (response.isSuccessful) {
             response.body()?.let { emit(it.data) }
         }
     }
 
     suspend fun authenticate() {
+        if(preferenceHelper.getTwitchAccessToken() != null){
+            return
+        }
         val response = mainRepository.authenticate()
         if (response.isSuccessful) {
             response.body()?.let { token ->
-                preferences.edit().putString(Consts.TWITCH_ACCESS_TOKEN, token.token)
-                    .apply()
+                preferenceHelper.setTwitchAccessToken(token.token)
             }
         }
 
