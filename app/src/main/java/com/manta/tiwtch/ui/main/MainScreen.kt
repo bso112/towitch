@@ -6,17 +6,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
+import com.manta.tiwtch.common.PreferenceHelper
 import com.manta.tiwtch.ui.home.HomeScreen
 import com.manta.tiwtch.ui.login.LoginScreen
 
 
 @Composable
-fun MainScreen() {
+fun MainScreen(preferenceHelper: PreferenceHelper) {
     val navController = rememberNavController()
     val navigator: Navigator = { navController.navigate(it) }
 
-
-    NavHost(navController = navController, startDestination = NavScreen.Login.route) {
+    val initialRoute = if(preferenceHelper.twitchAppToken.isEmpty() || preferenceHelper.twitchUserToken.isEmpty()){
+        NavScreen.Login.route
+    }else{
+        NavScreen.Home.route
+    }
+    NavHost(navController = navController, startDestination = initialRoute) {
         composable(
             NavScreen.Home.route,
             deepLinks = listOf(navDeepLink { uriPattern = "https://tiwtch.page.link/home" })

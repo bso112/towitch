@@ -12,3 +12,5 @@ fun <T> ViewModel.stateFlow(
     block: suspend FlowCollector<T>.() -> Unit
 ): StateFlow<T> =
     flow(block).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), initialValue)
+
+

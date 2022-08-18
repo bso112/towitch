@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         handleDeeplink()
         setContent {
             TiwtchTheme {
-                MainScreen()
+                MainScreen(preferenceHelper)
             }
         }
     }

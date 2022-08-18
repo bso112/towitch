@@ -14,8 +14,15 @@ class HomeViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
 
-    val streams: StateFlow<List<StreamData>> = stateFlow(initialValue = emptyList()) {
+    val followedStream: StateFlow<List<StreamData>> = stateFlow(initialValue = emptyList()) {
         val response = mainRepository.fetchFollowedStreams()
+        if (response.isSuccessful) {
+            response.body()?.let { emit(it.data) }
+        }
+    }
+
+    val recommendedStream : StateFlow<List<StreamData>> = stateFlow(initialValue = emptyList()) {
+        val response = mainRepository.fetchStreams()
         if (response.isSuccessful) {
             response.body()?.let { emit(it.data) }
         }
