@@ -32,8 +32,7 @@ fun HomeScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
     val followedStreams = mainViewModel.followedStream.collectAsState()
     val recommendedStreams = mainViewModel.recommendedStream.collectAsState()
     val user = mainViewModel.user.collectAsState()
-    val followings = mainViewModel.followings.collectAsState()
-//    val offLines = mainViewModel.offlineFollowings.collectAsState()
+    val offLines = mainViewModel.offlineFollowings.collectAsState()
 
     Column(
         modifier = Modifier
@@ -66,25 +65,25 @@ fun HomeScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
                 }
             }
             Text("오프라인", fontSize = title, fontWeight = FontWeight.Bold)
-//            Column {
-//                offLines.value.take(10).forEach { following ->
-//                    Row {
-//                        GlideImage(
-//                            imageModel = following.profileImageUrl,
-//                            contentScale = ContentScale.Crop,
-//                            modifier = Modifier
-//                                .width(30.dp)
-//                                .height(30.dp)
-//                        )
-//                        HSpacer(dp = 5.dp)
-//                        Column {
-//                            Text(following.name, fontSize = content1, fontWeight = FontWeight.Bold)
-//                        }
-//                    }
-//
-//                }
-//
-//            }
+            Column {
+                offLines.value.take(10).forEach { following ->
+                    Row {
+                        GlideImage(
+                            imageModel = following.profileImageUrl,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .width(30.dp)
+                                .height(30.dp)
+                        )
+                        HSpacer(dp = 5.dp)
+                        Column {
+                            Text(following.name, fontSize = content1, fontWeight = FontWeight.Bold)
+                        }
+                    }
+
+                }
+
+            }
         }
     }
 
