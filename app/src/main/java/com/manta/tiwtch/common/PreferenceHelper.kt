@@ -24,7 +24,7 @@ class PreferenceHelper @Inject constructor(
         return if (token.isBlank()) {
             ""
         } else {
-            "Bearer " + sharedPreference.getString(Consts.TWITCH_APP_TOKEN, "").toSafe()
+            "Bearer $token"
         }
     }
 
