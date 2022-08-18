@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.*
 
 
+fun String?.toSafe() = this ?: ""
+
 fun <T> ViewModel.stateFlow(
     initialValue: T,
     block: suspend FlowCollector<T>.() -> Unit

@@ -5,6 +5,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import com.manta.tiwtch.ui.home.HomeScreen
 import com.manta.tiwtch.ui.login.LoginScreen
 
@@ -16,7 +17,10 @@ fun MainScreen() {
 
 
     NavHost(navController = navController, startDestination = NavScreen.Login.route) {
-        composable(NavScreen.Home.route) {
+        composable(
+            NavScreen.Home.route,
+            deepLinks = listOf(navDeepLink { uriPattern = "https://tiwtch.page.link/home" })
+        ) {
             HomeScreen()
         }
         composable(NavScreen.Login.route) {

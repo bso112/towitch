@@ -12,7 +12,7 @@ interface TwitchIdService {
 
     @FormUrlEncoded
     @POST("/oauth2/token")
-    suspend fun authenticate(
+    suspend fun fetchAppToken(
         @Field("client_id") clientId: String = BuildConfig.TWITCH_CLIENT_ID,
         @Field("client_secret") clientSecret: String = BuildConfig.TWITCH_SECRET,
         @Field("grant_type") grantType: String = "client_credentials"

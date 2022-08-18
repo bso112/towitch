@@ -16,7 +16,7 @@ fun LoginScreen() {
         val logInUrl = "https://id.twitch.tv/oauth2/authorize"
             .plus("?response_type=token")
             .plus("&client_id=${BuildConfig.TWITCH_CLIENT_ID}")
-            .plus("&redirect_uri=https://tiwtch.page.link")
+            .plus("&redirect_uri=https://tiwtch.page.link/home")
             .plus("&scope=user:read:follows")
             .plus("&state=${UUID.randomUUID()}")
 
