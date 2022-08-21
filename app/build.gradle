@@ -113,4 +113,8 @@ dependencies {
     //firebase
     implementation platform("com.google.firebase:firebase-bom:$versions.firebaseBom")
     implementation 'com.google.firebase:firebase-analytics'
+
+    // Paging Compose
+    implementation "com.google.accompanist:accompanist-pager:$versions.pagerVersion"
+    implementation "com.google.accompanist:accompanist-pager-indicators:$versions.pagerVersion"
 }

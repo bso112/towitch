@@ -47,4 +47,7 @@ ext.versions = [
         //glide
         landscapistVersion      : '1.6.1',
 
+        //pager
+        pagerVersion            : '0.13.0'
+
 ]

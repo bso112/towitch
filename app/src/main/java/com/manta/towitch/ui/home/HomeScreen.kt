@@ -6,9 +6,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -19,26 +22,29 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
 import com.manta.towitch.common.HCenter
 import com.manta.towitch.common.HSpacer
 import com.manta.towitch.common.VSpacer
 import com.manta.towitch.data.entity.Stream
 import com.manta.towitch.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
+import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
-fun HomeScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
-    val followedStreams = mainViewModel.followedStream.collectAsState()
-    val recommendedStreams = mainViewModel.recommendedStream.collectAsState()
+fun HostScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
     val user = mainViewModel.user.collectAsState()
-    val offLines = mainViewModel.offlineFollowings.collectAsState()
+    val scope = rememberCoroutineScope()
+
+    val pagerState = rememberPagerState(pageCount = 4)
 
     Column(
         modifier = Modifier
             .background(color = white)
             .fillMaxSize()
-            .padding(horizontal = 15.dp)
-            .verticalScroll(rememberScrollState())
     ) {
         GlideImage(
             imageModel = user.value.profileImageUrl,
@@ -49,9 +55,45 @@ fun HomeScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
                 .padding(vertical = 10.dp)
                 .clip(shape = CircleShape)
         )
+        HorizontalPager(state = pagerState) { pageIndex ->
+            when (pageIndex) {
+                0 -> HomeScreen(mainViewModel)
+                1 -> HomeScreen(mainViewModel)
+                2 -> HomeScreen(mainViewModel)
+                3 -> HomeScreen(mainViewModel)
+            }
+        }
+        TabRow(
+            selectedTabIndex = 0, modifier = Modifier
+                .height(50.dp)
+        ) {
+            repeat(4) { index ->
+                Tab(selected = pagerState.currentPage == index, onClick = {
+                    scope.launch {
+                        pagerState.animateScrollToPage(index)
+                    }
+                }) {
+                    Text("test")
+                }
+            }
+        }
+
+    }
+}
+
+@Composable
+fun HomeScreen(mainViewModel: HomeViewModel) {
+    val followedStreams = mainViewModel.followedStream.collectAsState()
+    val recommendedStreams = mainViewModel.recommendedStream.collectAsState()
+    val offLines = mainViewModel.offlineFollowings.collectAsState()
+
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 15.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
         Text("팔로잉", fontSize = title_tab, fontWeight = FontWeight.Bold)
         VSpacer(dp = 50.dp)
-
         Text("생방송 채널", fontSize = title, fontWeight = FontWeight.Bold)
         VSpacer(dp = 20.dp)
         Column(
@@ -89,14 +131,11 @@ fun HomeScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
                     }
                 }
                 VSpacer(dp = 20.dp)
-
             }
-
         }
-
     }
-
 }
+
 
 @Composable
 fun StreamItem(stream: Stream) {
