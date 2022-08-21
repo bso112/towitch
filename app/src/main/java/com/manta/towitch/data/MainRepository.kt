@@ -13,7 +13,12 @@ class MainRepository @Inject constructor(
     suspend fun fetchFollowedStreams(userId: String) =
         twitchApiService.fetchFollowedStreams(preferenceHelper.twitchUserToken, userId)
 
-    suspend fun fetchUsers() = twitchApiService.fetchUsers(preferenceHelper.twitchUserToken)
+    /**
+     * @param userId if [userId] is not specified, the user is looked up by Bearer token.
+     */
+    suspend fun fetchUsers(userId : List<String> = emptyList()) = twitchApiService.fetchUsers(userToken = preferenceHelper.twitchUserToken, userId = userId)
     suspend fun fetchFollowings(userId: String) =
         twitchApiService.fetchFollowings(preferenceHelper.twitchUserToken, userId)
+
+    suspend fun fetchTag(broadcasterId : String) = twitchApiService.fetchTags(appToken = preferenceHelper.twitchAppToken, broadcasterId = broadcasterId)
 }

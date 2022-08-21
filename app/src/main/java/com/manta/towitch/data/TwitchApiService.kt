@@ -1,9 +1,6 @@
 package com.manta.towitch.data
 
-import com.manta.towitch.data.entity.BaseEntity
-import com.manta.towitch.data.entity.Following
-import com.manta.towitch.data.entity.Stream
-import com.manta.towitch.data.entity.User
+import com.manta.towitch.data.entity.*
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -25,6 +22,7 @@ interface TwitchApiService {
     @GET("/helix/users")
     suspend fun fetchUsers(
         @Header("Authorization") userToken: String,
+        @Query("id") userId: List<String> = emptyList()
     ): Response<BaseEntity<User>>
 
     @GET("/helix/users/follows")
@@ -32,5 +30,12 @@ interface TwitchApiService {
         @Header("Authorization") userToken: String,
         @Query("from_id") userId: String
     ): Response<BaseEntity<Following>>
+
+    @GET("/helix/streams/tags")
+    suspend fun fetchTags(
+        @Header("Authorization") appToken: String,
+        @Query("broadcaster_id") broadcasterId : String
+    ) : Response<BaseEntity<Tag>>
+
 
 }

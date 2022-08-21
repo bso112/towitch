@@ -42,10 +42,9 @@ data class Stream(
     val userName: String,
     @SerializedName("type")
     val type: String,
-    @SerializedName("tag_ids")
-    val tagIds: List<String>,
     @SerializedName("game_name")
-    val gameName : String
+    val gameName : String,
+    val tags : List<String>
 ) {
     fun getSizedThumbnailUrl(width: Int, height: Int) : String {
         return thumbnailUrl.replace("{width}", width.toString())

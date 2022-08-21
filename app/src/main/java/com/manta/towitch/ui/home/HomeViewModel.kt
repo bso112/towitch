@@ -27,6 +27,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+
     val followedStream: StateFlow<List<Stream>> = stateFlow(initialValue = emptyList()) {
         user.collect { user ->
             if (user == mockUser) return@collect
@@ -46,7 +47,10 @@ class HomeViewModel @Inject constructor(
         user.collect { user ->
             if (user == mockUser) return@collect
             mainRepository.fetchFollowings(user.id).onSuccess { followedList ->
-                emit(followedList.data.map { User(it.id, it.name, "") })
+                val idList = followedList.data.map { it.id }
+                mainRepository.fetchUsers(idList).onSuccess { results ->
+                    emit(results.data)
+                }
             }
         }
     }
