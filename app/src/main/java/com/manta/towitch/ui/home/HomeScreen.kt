@@ -261,7 +261,19 @@ fun StreamItem(stream: Stream) {
         }
         HSpacer(dp = 15.dp)
         Column {
-            Text(text = stream.userName, fontSize = content1, fontWeight = FontWeight.Bold)
+            Row {
+                GlideImage(
+                    imageModel = stream.userProfileImageUrl,
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .width(20.dp)
+                        .height(20.dp)
+                        .clip(shape = CircleShape)
+                )
+                HSpacer(dp = 5.dp)
+                Text(text = stream.userName, fontSize = content1, fontWeight = FontWeight.Bold)
+            }
+
             VSpacer(dp = 5.dp)
             Text(
                 text = stream.title,

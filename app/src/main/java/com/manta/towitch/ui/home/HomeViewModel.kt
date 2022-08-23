@@ -33,14 +33,26 @@ class HomeViewModel @Inject constructor(
         user.collect { user ->
             if (user == mockUser) return@collect
             mainRepository.fetchFollowedStreams(user.id).onSuccess { stream ->
-                emit(stream.data)
+                val idList = stream.data.map { it.userId }
+                mainRepository.fetchUsers(idList).onSuccess { results ->
+                    stream.data.sortedBy { it.userId }
+                    results.data.sortedBy { it.id }
+                    emit(stream.data.zip(results.data)
+                        .map { it.first.copy(userProfileImageUrl = it.second.profileImageUrl) })
+                }
             }
         }
     }
 
     val recommendedStream: StateFlow<List<Stream>> = stateFlow(initialValue = emptyList()) {
-        mainRepository.fetchStreams().onSuccess {
-            emit(it.data)
+        mainRepository.fetchStreams().onSuccess { stream ->
+            val idList = stream.data.map { it.userId }
+            mainRepository.fetchUsers(idList).onSuccess { results ->
+                stream.data.sortedBy { it.userId }
+                results.data.sortedBy { it.id }
+                emit(stream.data.zip(results.data)
+                    .map { it.first.copy(userProfileImageUrl = it.second.profileImageUrl) })
+            }
         }
     }
 

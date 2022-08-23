@@ -38,15 +38,18 @@ data class Stream(
     val viewerCount: Int,
     @SerializedName("thumbnail_url")
     val thumbnailUrl: String,
+    @SerializedName("user_id")
+    val userId: String,
     @SerializedName("user_name")
     val userName: String,
     @SerializedName("type")
     val type: String,
     @SerializedName("game_name")
-    val gameName : String,
-    val tags : List<String>
+    val gameName: String,
+    val tags: List<String>?,
+    val userProfileImageUrl: String?
 ) {
-    fun getSizedThumbnailUrl(width: Int, height: Int) : String {
+    fun getSizedThumbnailUrl(width: Int, height: Int): String {
         return thumbnailUrl.replace("{width}", width.toString())
             .replace("{height}", width.toString())
     }
