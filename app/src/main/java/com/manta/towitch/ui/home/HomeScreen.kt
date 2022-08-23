@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
@@ -115,7 +116,6 @@ fun HostScreen(mainViewModel: HomeViewModel = hiltViewModel()) {
             state = pagerState,
             dragEnabled = false,
             modifier = Modifier
-                .verticalScroll(rememberScrollState())
                 .padding(innerPadding)
         ) { pageIndex ->
             when (pageIndex) {
@@ -147,62 +147,85 @@ fun BottomTabItem(tab: BottomTab, isEnabled: Boolean) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun HomeScreen(mainViewModel: HomeViewModel) {
     val followedStreams = mainViewModel.followedStream.collectAsState()
     val recommendedStreams = mainViewModel.recommendedStream.collectAsState()
     val offLines = mainViewModel.offlineFollowings.collectAsState()
 
-    Column(
+    LazyColumn(
         modifier = Modifier
-            .padding(horizontal = 15.dp)
+            .padding(horizontal = 15.dp, vertical = 15.dp)
     ) {
-        Text("팔로잉", fontSize = title_tab, fontWeight = FontWeight.Bold)
-        VSpacer(dp = 50.dp)
-        Text("생방송 채널", fontSize = title, fontWeight = FontWeight.Bold)
-        VSpacer(dp = 20.dp)
-        Column(
-            verticalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
-            followedStreams.value.take(5).forEach { stream ->
-                StreamItem(stream = stream)
+
+        @Composable
+        fun Header(title: String) {
+            Text(
+                title,
+                fontSize = com.manta.towitch.ui.theme.title,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier
+                    .background(White)
+                    .fillMaxWidth()
+                    .padding(vertical = 5.dp)
+            )
+        }
+
+        item {
+            Text("팔로잉", fontSize = title_tab, fontWeight = FontWeight.Bold)
+            VSpacer(dp = 50.dp)
+        }
+        stickyHeader {
+            Header("생방송 채널")
+        }
+        item {
+            VSpacer(dp = 20.dp)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
+                followedStreams.value.take(5).forEach { stream ->
+                    StreamItem(stream = stream)
+                }
+            }
+            VSpacer(dp = 20.dp)
+        }
+        stickyHeader {
+            Header("추천 채널")
+        }
+        item {
+            VSpacer(dp = 20.dp)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(15.dp)
+            ) {
+                recommendedStreams.value.take(5).forEach { stream ->
+                    StreamItem(stream = stream)
+                }
             }
         }
-        VSpacer(dp = 20.dp)
-        Text("추천 채널", fontSize = title, fontWeight = FontWeight.Bold)
-        VSpacer(dp = 20.dp)
-        Column(
-            verticalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
-            recommendedStreams.value.take(5).forEach { stream ->
-                StreamItem(stream = stream)
-            }
+        stickyHeader {
+            Header("오프라인")
         }
-        Text(
-            "오프라인",
-            fontSize = title,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.padding(vertical = 20.dp)
-        )
-        Column {
-            offLines.value.take(10).forEach { following ->
-                Row {
-                    GlideImage(
-                        imageModel = following.profileImageUrl,
-                        contentScale = ContentScale.Crop,
-                        modifier = Modifier
-                            .width(50.dp)
-                            .height(50.dp)
-                            .clip(shape = CircleShape)
-                    )
-                    HSpacer(dp = 10.dp)
-                    Column {
+        item {
+            VSpacer(dp = 20.dp)
+            Column(verticalArrangement = Arrangement.spacedBy(15.dp)) {
+                offLines.value.take(6).forEach { following ->
+                    Row {
+                        GlideImage(
+                            imageModel = following.profileImageUrl,
+                            contentScale = ContentScale.Crop,
+                            modifier = Modifier
+                                .width(50.dp)
+                                .height(50.dp)
+                                .clip(shape = CircleShape)
+                        )
+                        HSpacer(dp = 10.dp)
                         Text(following.name, fontSize = content1, fontWeight = FontWeight.Bold)
                     }
                 }
-                VSpacer(dp = 20.dp)
             }
         }
+
     }
 }
 
