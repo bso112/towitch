@@ -6,8 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
 import com.manta.towitch.common.PreferenceHelper
-import com.manta.towitch.ui.home.HomeScreen
-import com.manta.towitch.ui.home.HostScreen
+import com.manta.towitch.ui.host.HostScreen
 import com.manta.towitch.ui.login.LoginScreen
 
 
