@@ -1,8 +1,10 @@
 package com.manta.towitch.ui.page.explore
 
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Card
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -11,16 +13,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.*
 import com.google.android.material.math.MathUtils.lerp
+import com.manta.towitch.R
+import androidx.compose.foundation.Image
+import androidx.compose.ui.graphics.ColorFilter
+import com.manta.towitch.common.HCenter
+import com.manta.towitch.common.HSpacer
 import com.manta.towitch.common.VSpacer
 import com.manta.towitch.data.entity.Stream
 import com.manta.towitch.ui.page.home.MainViewModel
 import com.manta.towitch.ui.theme.Black
+import com.manta.towitch.ui.theme.White
 import com.manta.towitch.ui.theme.title_tab
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
@@ -67,7 +75,31 @@ fun ExploreScreen(mainViewModel: MainViewModel) {
                     },
                     modifier = Modifier.padding(horizontal = 15.dp)
                 )
+                Row(
+                    modifier = Modifier
+                        .horizontalScroll(rememberScrollState())
+                        .padding(horizontal = 15.dp),
+                    horizontalArrangement = Arrangement.spacedBy(5.dp)
+                ) {
+                    listOf("게임", "리얼라이프", "e스포츠", "음악", "크리에이티브").forEach {
+                        Button(
+                            onClick = { /*TODO*/ }, modifier = Modifier
+                                .padding(horizontal = 3.dp, vertical = 5.dp)
+                                .width(150.dp)
+                        ) {
+                            HCenter {
+                                Text(it, color = White)
+                                Spacer(Modifier.weight(1f))
+                                Image(
+                                    painter = painterResource(id = R.drawable.ic_baseline_search_24),
+                                    contentDescription = "",
+                                    colorFilter = ColorFilter.tint(White)
+                                )
+                            }
+                        }
+                    }
 
+                }
             }
         }
     }
