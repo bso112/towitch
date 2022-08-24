@@ -12,59 +12,78 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.modifier.modifierLocalConsumer
+import androidx.compose.ui.text.*
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPager
-import com.google.accompanist.pager.calculateCurrentOffsetForPage
-import com.google.accompanist.pager.rememberPagerState
+import com.google.accompanist.pager.*
 import com.google.android.material.math.MathUtils.lerp
 import com.manta.towitch.common.VSpacer
 import com.manta.towitch.data.entity.Stream
 import com.manta.towitch.ui.page.home.MainViewModel
+import com.manta.towitch.ui.theme.Black
 import com.manta.towitch.ui.theme.title_tab
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ExploreScreen(mainViewModel: MainViewModel) {
     val streams = mainViewModel.recommendedStream.collectAsState()
+    val pagerState = rememberPagerState(streams.value.size * 5)
     val scope = rememberCoroutineScope()
 
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-    ) {
-        item {
-            Text(
-                "찾기",
-                fontSize = title_tab,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(horizontal = 15.dp, vertical = 15.dp)
-            )
-            VSpacer(dp = 50.dp)
-            if (streams.value.isNotEmpty()) {
-                DiscreteScrollView(streams.value.take(8), scope)
-            }
+    if (streams.value.isNotEmpty()) {
+        val currentStream = streams.value[pagerState.currentPage % streams.value.size]
 
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+        ) {
+            item {
+                Text(
+                    "찾기",
+                    fontSize = title_tab,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.padding(all = 15.dp)
+                )
+                VSpacer(dp = 50.dp)
+                if (streams.value.isNotEmpty()) {
+                    DiscreteScrollView(streams.value.take(8), pagerState, scope)
+                }
+                VSpacer(dp = 20.dp)
+                Text(
+                    buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = Black)) {
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(currentStream.userName)
+                            }
+                            append(" 방송 중 ")
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(currentStream.gameName)
+                            }
+                        }
+                    },
+                    modifier = Modifier.padding(horizontal = 15.dp)
+                )
+
+            }
         }
     }
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun DiscreteScrollView(streams: List<Stream>, scope: CoroutineScope) {
-    val state = rememberPagerState(streams.size * 5)
-    LaunchedEffect(state) {
+fun DiscreteScrollView(streams: List<Stream>, pagerState: PagerState, scope: CoroutineScope) {
+    LaunchedEffect(pagerState) {
         scope.launch {
-            state.scrollToPage(3)
+            pagerState.scrollToPage(3)
         }
     }
 
     HorizontalPager(
-        state = state,
+        state = pagerState,
         modifier = Modifier.fillMaxWidth()
     ) { page ->
         Box(
