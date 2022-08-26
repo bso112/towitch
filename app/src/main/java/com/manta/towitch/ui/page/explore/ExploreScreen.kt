@@ -52,29 +52,21 @@ fun ExploreScreen(mainViewModel: MainViewModel) {
         val currentStream = streams.value[pagerState.currentPage % streams.value.size]
 
         Column {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Text(
-                    "찾기",
-                    fontSize = title_tab,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(all = 15.dp)
-                )
-                VSpacer(dp = 50.dp)
-                if (streams.value.isNotEmpty()) {
-                    DiscreteScrollView(streams.value.take(8), pagerState, scope)
-                }
-
-            }
-
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 15.dp)
             ) {
                 item {
+                    Text(
+                        "찾기",
+                        fontSize = title_tab,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier.padding(all = 15.dp)
+                    )
+                    VSpacer(dp = 50.dp)
+                    if (streams.value.isNotEmpty()) {
+                        DiscreteScrollView(streams.value.take(8), pagerState, scope)
+                    }
                     VSpacer(dp = 20.dp)
                     Text(
                         buildAnnotatedString {
@@ -88,38 +80,50 @@ fun ExploreScreen(mainViewModel: MainViewModel) {
                                 }
                             }
                         },
+                        modifier = Modifier.padding(horizontal = 15.dp)
                     )
                     VSpacer(dp = 10.dp)
-                    Row(
-                        modifier = Modifier
-                            .horizontalScroll(rememberScrollState()),
-                        horizontalArrangement = Arrangement.spacedBy(5.dp)
+                    LazyRow(
+                        horizontalArrangement = Arrangement.spacedBy(5.dp),
+                        contentPadding = PaddingValues(horizontal = 15.dp)
                     ) {
-                        listOf("게임", "리얼라이프", "e스포츠", "음악", "크리에이티브").forEach {
+                        items(listOf("게임", "리얼라이프", "e스포츠", "음악", "크리에이티브")) {
                             Button(
-                                onClick = { /*TODO*/ }, modifier = Modifier
-                                    .padding(horizontal = 3.dp, vertical = 3.dp)
-                                    .width(170.dp)
-                                    .background(color = Purple500, shape = RoundedCornerShape(5.dp))
+                                onClick = { /*TODO*/ },
+                                modifier = Modifier
+                                    .background(
+                                        color = Purple500,
+                                        shape = RoundedCornerShape(5.dp)
+                                    )
+                                    .width(150.dp)
+                                    .height(40.dp),
+                                contentPadding = PaddingValues(horizontal = 20.dp)
                             ) {
                                 HCenter {
-                                    Text(it, color = White)
+                                    Text(
+                                        it,
+                                        color = White,
+                                        fontSize = title2,
+                                        fontWeight = FontWeight.Bold
+                                    )
                                     Spacer(Modifier.weight(1f))
                                     Image(
                                         painter = painterResource(id = R.drawable.ic_baseline_search_24),
                                         contentDescription = "",
-                                        colorFilter = ColorFilter.tint(White)
+                                        colorFilter = ColorFilter.tint(White),
+                                        modifier = Modifier.size(20.dp)
                                     )
                                 }
                             }
                         }
                     }
+                    VSpacer(dp = 20.dp)
                 }
                 stickyHeader {
                     Header("취향 저격 생방송 채널")
                 }
                 item {
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(5.dp)) {
+                    LazyRow(horizontalArrangement = Arrangement.spacedBy(5.dp), contentPadding = PaddingValues(horizontal = 15.dp)) {
                         items(recommendStream.value) { stream ->
                             StreamItem(stream)
                         }
@@ -198,7 +202,7 @@ private fun Header(text: String) {
         modifier = Modifier
             .background(White)
             .fillMaxWidth()
-            .padding(vertical = 5.dp)
+            .padding(horizontal = 15.dp),
     )
 }
 
