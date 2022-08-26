@@ -34,25 +34,12 @@ fun HomeScreen(mainViewModel: MainViewModel) {
     val recommendedStreams = mainViewModel.recommendedStream.collectAsState()
     val offLines = mainViewModel.offlineFollowings.collectAsState()
 
+
     LazyColumn(
         modifier = Modifier
             .padding(horizontal = 15.dp, vertical = 15.dp)
             .fillMaxSize()
     ) {
-
-        @Composable
-        fun Header(title: String) {
-            Text(
-                title,
-                fontSize = com.manta.towitch.ui.theme.title,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier
-                    .background(White)
-                    .fillMaxWidth()
-                    .padding(vertical = 5.dp)
-            )
-        }
-
         item {
             Text("팔로잉", fontSize = title_tab, fontWeight = FontWeight.Bold)
             VSpacer(dp = 50.dp)
@@ -110,6 +97,18 @@ fun HomeScreen(mainViewModel: MainViewModel) {
     }
 }
 
+@Composable
+fun Header(title: String) {
+    Text(
+        title,
+        fontSize = com.manta.towitch.ui.theme.title,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier
+            .background(White)
+            .fillMaxWidth()
+            .padding(vertical = 5.dp)
+    )
+}
 
 @Composable
 fun StreamItem(stream: Stream) {

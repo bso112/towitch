@@ -9,10 +9,7 @@ import com.manta.towitch.utils.mockUser
 import com.manta.towitch.utils.onSuccess
 import com.manta.towitch.utils.stateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -57,6 +54,8 @@ class MainViewModel @Inject constructor(
             }
         }
     }
+
+    val randomStream = recommendedStream.map { it.shuffled() }
 
     val followings: StateFlow<List<User>> = stateFlow(initialValue = emptyList()) {
         user.collect { user ->
