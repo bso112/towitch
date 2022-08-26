@@ -37,5 +37,23 @@ interface TwitchApiService {
         @Query("broadcaster_id") broadcasterId : String
     ) : Response<BaseEntity<Tag>>
 
+    @GET("/helix/search/categories")
+    suspend fun fetchCategories(
+        @Header("Authorization") appToken: String,
+        @Query("query") query : String
+    ) :Response<BaseEntity<Category>>
+
+    @GET("/helix/clips")
+    suspend fun fetchClips(
+        @Header("Authorization") appToken: String,
+        @Query("game_id") gameId : String = "",
+        @Query("broadcaster_id") broadcasterId: String = "",
+    ) : Response<BaseEntity<Clip>>
+
+    @GET("/helix/games")
+    suspend fun fetchGames(
+        @Header("Authorization") appToken: String,
+        @Query("id") gameId: List<String>
+    ) : Response<BaseEntity<Game>>
 
 }

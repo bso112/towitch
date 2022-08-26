@@ -119,7 +119,7 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
         ) { pageIndex ->
             when (pageIndex) {
                 0 -> HomeScreen(mainViewModel)
-                1 -> ExploreScreen(mainViewModel)
+                1 -> ExploreScreen()
                 2 -> HomeScreen(mainViewModel)
                 3 -> HomeScreen(mainViewModel)
             }

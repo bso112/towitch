@@ -3,6 +3,7 @@ package com.manta.towitch.ui.page.explore
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -25,25 +26,37 @@ import com.manta.towitch.R
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.manta.towitch.common.HCenter
 import com.manta.towitch.common.HSpacer
 import com.manta.towitch.common.VSpacer
+import com.manta.towitch.data.entity.Category
+import com.manta.towitch.data.entity.Clip
 import com.manta.towitch.data.entity.Stream
-import com.manta.towitch.ui.page.home.MainViewModel
 import com.manta.towitch.ui.theme.*
+import com.manta.towitch.utils.minuteToTimeString
+import com.manta.towitch.utils.toDateString
+import com.manta.towitch.utils.toSafe
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun ExploreScreen(mainViewModel: MainViewModel) {
-    val streams = mainViewModel.recommendedStream.collectAsState()
-    val recommendStream = mainViewModel.randomStream.collectAsState(emptyList())
+fun ExploreScreen(exploreViewModel: ExploreViewModel = hiltViewModel()) {
+    val streams = exploreViewModel.streams.collectAsState()
+    val recommendStream = exploreViewModel.recommendedStreams.collectAsState(emptyList())
+    val smallStreams = exploreViewModel.smallStreams.collectAsState(emptyList())
+    val categories = exploreViewModel.categories.collectAsState()
+    val justChattingStreams = exploreViewModel.justcChattingStreams.collectAsState(emptyList())
+    val clips = exploreViewModel.clips.collectAsState()
+
     val pagerState = rememberPagerState(streams.value.size * 5)
     val scope = rememberCoroutineScope()
 
@@ -123,16 +136,174 @@ fun ExploreScreen(mainViewModel: MainViewModel) {
                     Header("취향 저격 생방송 채널")
                 }
                 item {
-                    LazyRow(horizontalArrangement = Arrangement.spacedBy(5.dp), contentPadding = PaddingValues(horizontal = 15.dp)) {
+                    StreamRow {
                         items(recommendStream.value) { stream ->
                             StreamItem(stream)
                         }
                     }
+                    VSpacer(dp = 20.dp)
                 }
-
+                stickyHeader {
+                    Header(
+                        buildAnnotatedString {
+                            append("취향 저격 ")
+                            withStyle(SpanStyle(color = Purple500)) {
+                                append("카테고리")
+                            }
+                        }
+                    )
+                }
+                item {
+                    StreamRow {
+                        items(categories.value) {
+                            CategoryItem(category = it)
+                        }
+                    }
+                    VSpacer(dp = 20.dp)
+                }
+                stickyHeader {
+                    Header(text = "추천 소규모 채널")
+                }
+                item {
+                    StreamRow {
+                        items(smallStreams.value) {
+                            StreamItem(stream = it)
+                        }
+                    }
+                    VSpacer(dp = 20.dp)
+                }
+                stickyHeader {
+                    Header(
+                        buildAnnotatedString {
+                            append("추천")
+                            withStyle(SpanStyle(color = Purple500)) {
+                                append(" JUST CHATTING ")
+                            }
+                            append("채널")
+                        }
+                    )
+                }
+                item {
+                    StreamRow {
+                        items(justChattingStreams.value) {
+                            StreamItem(stream = it)
+                        }
+                    }
+                }
+                stickyHeader {
+                    Header("취향 저격 클립")
+                    StreamRow {
+                        items(clips.value.take(12)) {
+                            ClipItem(clip = it)
+                        }
+                    }
+                }
             }
         }
 
+    }
+}
+
+@Composable
+private fun StreamRow(content: LazyListScope.() -> Unit) {
+    LazyRow(
+        contentPadding = PaddingValues(horizontal = 15.dp),
+        horizontalArrangement = Arrangement.spacedBy(5.dp),
+        content = content
+    )
+}
+
+@Composable
+private fun CategoryItem(category: Category) {
+    Column {
+        GlideImage(
+            imageModel = category.imageUrl, contentScale = ContentScale.FillWidth,
+            modifier = Modifier
+                .width(100.dp)
+                .height(150.dp)
+                .fillMaxWidth()
+        )
+        VSpacer(dp = 5.dp)
+        Text(category.name, fontSize = content1, fontWeight = FontWeight.Bold)
+    }
+}
+
+@Composable
+private fun ClipItem(clip: Clip) {
+    Column(modifier = Modifier.width(250.dp)) {
+        Box {
+            GlideImage(
+                imageModel = clip.thumbnailUrl,
+                contentScale = ContentScale.FillWidth,
+                modifier = Modifier
+                    .height(150.dp)
+                    .fillMaxWidth()
+            )
+
+            Box(
+                modifier = Modifier
+                    .padding(all = 5.dp)
+                    .align(Alignment.TopStart)
+            ) {
+                Text(
+                    text = clip.duration.toInt().minuteToTimeString(),
+                    modifier = Modifier
+                        .background(Black_Transparent, shape = RoundedCornerShape(3.dp))
+                        .padding(horizontal = 3.dp, vertical = 2.dp),
+                    fontSize = content3,
+                    color = White
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .padding(all = 5.dp)
+                    .align(Alignment.BottomStart)
+            ) {
+                Text(
+                    text = "조회수 ${clip.viewCount}회",
+                    modifier = Modifier
+                        .background(Black_Transparent, shape = RoundedCornerShape(3.dp))
+                        .padding(horizontal = 3.dp, vertical = 2.dp),
+                    fontSize = content3,
+                    color = White
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .padding(all = 5.dp)
+                    .align(Alignment.BottomEnd)
+            ) {
+                Text(
+                    clip.createdAt.toDateString(), modifier = Modifier
+                        .background(Black_Transparent, shape = RoundedCornerShape(3.dp))
+                        .padding(horizontal = 3.dp, vertical = 2.dp),
+                    fontSize = content3,
+                    color = White
+                )
+            }
+        }
+        VSpacer(dp = 10.dp)
+        Row(Modifier.padding(horizontal = 5.dp)) {
+            GlideImage(
+                imageModel = clip.broadCasterProfileImageUrl,
+                contentScale = ContentScale.Inside,
+                modifier = Modifier
+                    .width(30.dp)
+                    .height(30.dp)
+                    .clip(CircleShape)
+            )
+            HSpacer(dp = 5.dp)
+            Column {
+                Text(clip.broadCasterName, fontSize = content1, fontWeight = FontWeight.Bold)
+                Text(
+                    clip.title,
+                    fontSize = content2,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Text(clip.gameName.toSafe(), fontSize = content2)
+            }
+        }
     }
 }
 
@@ -144,36 +315,47 @@ private fun StreamItem(stream: Stream) {
                 imageModel = stream.getSizedThumbnailUrl(1024, 512),
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
-                    .height(100.dp)
+                    .height(150.dp)
                     .fillMaxWidth()
             )
-            Text(
-                text = "생방송",
-                modifier = Modifier
-                    .background(Red, shape = RoundedCornerShape(3.dp))
-                    .padding(all = 2.dp)
-                    .align(Alignment.TopStart),
-                fontSize = content3,
-                color = White
-            )
-            Text(
-                text = "시청자 ${stream.viewerCount}명",
-                modifier = Modifier
-                    .background(Black_Transparent, shape = RoundedCornerShape(3.dp))
-                    .padding(all = 2.dp)
-                    .align(Alignment.BottomStart),
-                fontSize = content3,
-                color = White
-            )
-        }
 
-        Row {
+            Box(
+                modifier = Modifier
+                    .padding(all = 5.dp)
+                    .align(Alignment.TopStart)
+            ) {
+                Text(
+                    text = "생방송",
+                    modifier = Modifier
+                        .background(Red, shape = RoundedCornerShape(3.dp))
+                        .padding(horizontal = 3.dp, vertical = 2.dp),
+                    fontSize = content3,
+                    color = White
+                )
+            }
+            Box(
+                modifier = Modifier
+                    .padding(all = 5.dp)
+                    .align(Alignment.BottomStart)
+            ) {
+                Text(
+                    text = "시청자 ${stream.viewerCount}명",
+                    modifier = Modifier
+                        .background(Black_Transparent, shape = RoundedCornerShape(3.dp))
+                        .padding(horizontal = 3.dp, vertical = 2.dp),
+                    fontSize = content3,
+                    color = White
+                )
+            }
+        }
+        VSpacer(dp = 10.dp)
+        Row(Modifier.padding(horizontal = 5.dp)) {
             GlideImage(
                 imageModel = stream.userProfileImageUrl,
                 contentScale = ContentScale.Inside,
                 modifier = Modifier
-                    .width(50.dp)
-                    .height(50.dp)
+                    .width(30.dp)
+                    .height(30.dp)
                     .clip(CircleShape)
             )
             HSpacer(dp = 5.dp)
@@ -188,10 +370,21 @@ private fun StreamItem(stream: Stream) {
                 Text(stream.gameName, fontSize = content2)
             }
         }
-
     }
 }
 
+@Composable
+private fun Header(string: AnnotatedString) {
+    Text(
+        string,
+        fontSize = content1,
+        fontWeight = FontWeight.Bold,
+        modifier = Modifier
+            .background(White)
+            .fillMaxWidth()
+            .padding(horizontal = 15.dp, vertical = 10.dp),
+    )
+}
 
 @Composable
 private fun Header(text: String) {
@@ -202,7 +395,7 @@ private fun Header(text: String) {
         modifier = Modifier
             .background(White)
             .fillMaxWidth()
-            .padding(horizontal = 15.dp),
+            .padding(horizontal = 15.dp, vertical = 10.dp),
     )
 }
 

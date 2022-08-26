@@ -44,6 +44,8 @@ data class Stream(
     val userName: String,
     @SerializedName("type")
     val type: String,
+    @SerializedName("game_id")
+    val gameId: String,
     @SerializedName("game_name")
     val gameName: String,
     val tags: List<String>?,
