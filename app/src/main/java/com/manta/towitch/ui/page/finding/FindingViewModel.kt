@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.manta.towitch.data.MainRepository
 import com.manta.towitch.data.entity.Category
 import com.manta.towitch.data.entity.Clip
+import com.manta.towitch.data.entity.Game
 import com.manta.towitch.data.entity.Stream
 import com.manta.towitch.utils.Logger
 import com.manta.towitch.utils.onFailure
@@ -19,8 +20,8 @@ class FindingViewModel @Inject constructor(
     private val mainRepository: MainRepository
 ) : ViewModel() {
 
-    val categories: StateFlow<List<Category>> = stateFlow(emptyList()) {
-        mainRepository.fetchCategories("game").onSuccess {
+    val games: StateFlow<List<Game>> = stateFlow(emptyList()) {
+        mainRepository.fetchTopGames().onSuccess {
             emit(it.data)
         }.onFailure {
             Logger.d(it)

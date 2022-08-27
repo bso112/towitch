@@ -37,8 +37,8 @@ import com.manta.towitch.R
 import com.manta.towitch.common.HCenter
 import com.manta.towitch.common.HSpacer
 import com.manta.towitch.common.VSpacer
-import com.manta.towitch.data.entity.Category
 import com.manta.towitch.data.entity.Clip
+import com.manta.towitch.data.entity.Game
 import com.manta.towitch.data.entity.Stream
 import com.manta.towitch.ui.theme.*
 import com.manta.towitch.utils.minuteToTimeString
@@ -55,7 +55,7 @@ fun findingScreen(vm: FindingViewModel = hiltViewModel()) {
     val streams = vm.streams.collectAsState()
     val recommendStream = vm.recommendedStreams.collectAsState(emptyList())
     val smallStreams = vm.smallStreams.collectAsState(emptyList())
-    val categories = vm.categories.collectAsState()
+    val games = vm.games.collectAsState()
     val justChattingStreams = vm.justcChattingStreams.collectAsState(emptyList())
     val clips = vm.clips.collectAsState()
 
@@ -156,8 +156,8 @@ fun findingScreen(vm: FindingViewModel = hiltViewModel()) {
                 }
                 item {
                     StreamRow {
-                        items(categories.value) {
-                            CategoryItem(category = it)
+                        items(games.value) {
+                            GameItem(it)
                         }
                     }
                     VSpacer(dp = 20.dp)
@@ -217,17 +217,19 @@ private fun StreamRow(content: LazyListScope.() -> Unit) {
 }
 
 @Composable
-private fun CategoryItem(category: Category) {
-    Column {
+private fun GameItem(game: Game) {
+    Column(
+        Modifier
+            .width(100.dp)
+    ) {
         GlideImage(
-            imageModel = category.imageUrl, contentScale = ContentScale.FillWidth,
+            imageModel = game.getSizedThumbnailUrl(256, 512),
+            contentScale = ContentScale.FillBounds,
             modifier = Modifier
-                .width(100.dp)
                 .height(150.dp)
-                .fillMaxWidth()
         )
         VSpacer(dp = 5.dp)
-        Text(category.name, fontSize = content1, fontWeight = FontWeight.Bold)
+        Text(game.name, fontSize = content1, maxLines = 1, fontWeight = FontWeight.Bold, overflow = TextOverflow.Ellipsis)
     }
 }
 

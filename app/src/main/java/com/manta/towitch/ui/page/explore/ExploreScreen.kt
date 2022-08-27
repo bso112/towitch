@@ -1,10 +1,13 @@
 package com.manta.towitch.ui.page.explore
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
@@ -13,50 +16,23 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Outline
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.manta.towitch.R
+import com.manta.towitch.common.HCenter
 import com.manta.towitch.common.HSpacer
 import com.manta.towitch.common.VSpacer
 import com.manta.towitch.data.entity.Game
-import com.manta.towitch.ui.page.finding.findingScreen
-import com.manta.towitch.ui.page.home.HomeScreen
 import com.manta.towitch.ui.theme.*
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
 
-/**
- * TabRow(
-selectedTabIndex = 0,
-backgroundColor = White,
-indicator = {},
-modifier = Modifier
-.height(50.dp)
-.fillMaxWidth()
-) {
-BottomTab.values().forEachIndexed { index, tab ->
-Tab(
-selected = pagerState.currentPage == index,
-onClick = {
-scope.launch {
-pagerState.animateScrollToPage(index)
-}
-},
-selectedContentColor = Purple500, unselectedContentColor = Black,
-) {
-BottomTabItem(tab = tab, isEnabled = pagerState.currentPage == index)
-}
-}
-}
- */
 @OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
 @Composable
 fun ExploreScreen(vm: ExploreViewModel = hiltViewModel()) {
@@ -64,22 +40,25 @@ fun ExploreScreen(vm: ExploreViewModel = hiltViewModel()) {
     val scope = rememberCoroutineScope()
     val games = vm.games.collectAsState()
     Box {
-        Column {
-            LazyColumn(modifier = Modifier.padding(all = 15.dp)) {
-                item {
-                    Text(
-                        "탐색",
-                        fontSize = title_tab,
-                        fontWeight = FontWeight.Bold,
-                    )
-                    VSpacer(dp = 30.dp)
-                }
-                stickyHeader {
+        LazyColumn(
+            modifier = Modifier
+                .padding(horizontal = 15.dp)
+        ) {
+            item {
+                Text(
+                    "탐색",
+                    fontSize = title_tab,
+                    fontWeight = FontWeight.Bold,
+                )
+                VSpacer(dp = 30.dp)
+            }
+            stickyHeader {
+                Box(modifier = Modifier.fillMaxWidth().background(color = White)) {
                     TabRow(
-                        selectedTabIndex = 0,
+                        selectedTabIndex = pagerState.currentPage,
                         modifier = Modifier
-                            .height(50.dp)
-                            .fillMaxWidth(),
+                            .height(40.dp)
+                            .width(180.dp),
                         backgroundColor = White, contentColor = Purple500,
                     ) {
                         listOf("카테고리", "생방송 채널").forEachIndexed { index, title ->
@@ -88,29 +67,31 @@ fun ExploreScreen(vm: ExploreViewModel = hiltViewModel()) {
                                     pagerState.animateScrollToPage(index)
                                 }
                             }, selectedContentColor = Purple500, unselectedContentColor = Black) {
-                                Text(title, modifier = Modifier.align(Alignment.CenterHorizontally), fontSize = content1)
+                                Text(
+                                    title,
+                                    modifier = Modifier.align(Alignment.CenterHorizontally),
+                                    fontSize = content1,
+                                    fontWeight = FontWeight.Bold
+                                )
                             }
                         }
 
                     }
                 }
-                item {
-                    VSpacer(dp = 15.dp)
+            }
+            item {
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(start = 15.dp, end = 15.dp, bottom = 15.dp)
+                ) { pageIndex ->
+                    when (pageIndex) {
+                        0 -> GamePage(games.value)
+                        1 -> GamePage(games.value)
+                    }
                 }
             }
-            HorizontalPager(
-                state = pagerState,
-                dragEnabled = false,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 15.dp)
-            ) { pageIndex ->
-                when (pageIndex) {
-                    0 -> GamePage(games.value)
-                    1 -> GamePage(games.value)
-                }
-            }
-
         }
         ExtendedFloatingActionButton(
             onClick = { /*TODO*/ },
@@ -128,8 +109,12 @@ fun ExploreScreen(vm: ExploreViewModel = hiltViewModel()) {
 
 @Composable
 private fun GamePage(games: List<Game>) {
-    LazyColumn(Modifier.fillMaxWidth()) {
-        items(games) {
+    Column(
+        Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(15.dp)
+    ) {
+        VSpacer(dp = 15.dp)
+        games.forEach {
             GameItem(game = it)
         }
     }
@@ -138,10 +123,13 @@ private fun GamePage(games: List<Game>) {
 
 @Composable
 private fun GameItem(game: Game) {
-    Row {
+    Row(
+        Modifier
+            .fillMaxWidth()
+    ) {
         GlideImage(
             imageModel = game.getSizedThumbnailUrl(128, 256),
-            contentScale = ContentScale.FillWidth,
+            contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .width(80.dp)
                 .height(100.dp)
