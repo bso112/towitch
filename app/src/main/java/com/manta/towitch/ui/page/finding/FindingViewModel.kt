@@ -2,7 +2,6 @@ package com.manta.towitch.ui.page.finding
 
 import androidx.lifecycle.ViewModel
 import com.manta.towitch.data.MainRepository
-import com.manta.towitch.data.entity.Category
 import com.manta.towitch.data.entity.Clip
 import com.manta.towitch.data.entity.Game
 import com.manta.towitch.data.entity.Stream
