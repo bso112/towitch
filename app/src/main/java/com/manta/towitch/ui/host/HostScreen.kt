@@ -54,11 +54,6 @@ enum class BottomTab(
         R.drawable.ic_baseline_content_copy_24,
         R.drawable.ic_baseline_content_copy_24,
         R.string.bottom_tab_explore
-    ),
-    Search(
-        R.drawable.ic_baseline_search_24,
-        R.drawable.ic_baseline_search_24,
-        R.string.bottom_tab_search
     )
 }
 
@@ -68,7 +63,7 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
     val user = mainViewModel.user.collectAsState()
     val scope = rememberCoroutineScope()
 
-    val pagerState = rememberPagerState(pageCount = 4)
+    val pagerState = rememberPagerState(pageCount = 3)
 
     Scaffold(
         topBar = {
@@ -122,7 +117,6 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
                 0 -> HomeScreen(mainViewModel)
                 1 -> findingScreen()
                 2 -> ExploreScreen()
-                3 -> HomeScreen(mainViewModel)
             }
         }
     }

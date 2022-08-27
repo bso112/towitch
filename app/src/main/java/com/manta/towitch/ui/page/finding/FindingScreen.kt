@@ -70,6 +70,7 @@ fun findingScreen(vm: FindingViewModel = hiltViewModel()) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(bottom = 20.dp)
             ) {
                 item {
                     Text(
@@ -195,7 +196,6 @@ fun findingScreen(vm: FindingViewModel = hiltViewModel()) {
                     Header("취향 저격 클립")
                 }
                 item {
-                    VSpacer(dp = 20.dp)
                     StreamRow {
                         items(clips.value.take(12)) {
                             ClipItem(clip = it)
