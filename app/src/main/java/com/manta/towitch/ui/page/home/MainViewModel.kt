@@ -1,15 +1,18 @@
 package com.manta.towitch.ui.page.home
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.manta.towitch.data.MainRepository
-import com.manta.towitch.data.entity.Category
 import com.manta.towitch.data.entity.Stream
 import com.manta.towitch.data.entity.User
-import com.manta.towitch.utils.*
+import com.manta.towitch.utils.mockUser
+import com.manta.towitch.utils.onSuccess
+import com.manta.towitch.utils.stateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
 @HiltViewModel

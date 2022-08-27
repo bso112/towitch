@@ -1,4 +1,4 @@
-package com.manta.towitch.ui.host
+
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -27,6 +27,7 @@ import com.manta.towitch.R
 import com.manta.towitch.common.Line
 import com.manta.towitch.common.VCenter
 import com.manta.towitch.ui.page.explore.ExploreScreen
+import com.manta.towitch.ui.page.finding.findingScreen
 import com.manta.towitch.ui.page.home.HomeScreen
 import com.manta.towitch.ui.page.home.MainViewModel
 import com.manta.towitch.ui.theme.*
@@ -72,7 +73,7 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             GlideImage(
-                imageModel = user.value,
+                imageModel = user.value.profileImageUrl,
                 contentScale = ContentScale.Inside,
                 modifier = Modifier
                     .width(50.dp)
@@ -119,8 +120,8 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
         ) { pageIndex ->
             when (pageIndex) {
                 0 -> HomeScreen(mainViewModel)
-                1 -> ExploreScreen()
-                2 -> HomeScreen(mainViewModel)
+                1 -> findingScreen()
+                2 -> ExploreScreen()
                 3 -> HomeScreen(mainViewModel)
             }
         }
@@ -145,4 +146,3 @@ fun BottomTabItem(tab: BottomTab, isEnabled: Boolean) {
         Text(stringResource(id = tab.title), fontSize = content2)
     }
 }
-

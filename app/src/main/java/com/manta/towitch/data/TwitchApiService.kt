@@ -56,4 +56,8 @@ interface TwitchApiService {
         @Query("id") gameId: List<String>
     ) : Response<BaseEntity<Game>>
 
+    @GET("/helix/games/top")
+    suspend fun fetchTopGames(
+        @Header("Authorization") appToken: String
+    ) : Response<BaseEntity<Game>>
 }

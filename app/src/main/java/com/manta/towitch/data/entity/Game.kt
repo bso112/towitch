@@ -9,4 +9,9 @@ data class Game(
     val id: String,
     @SerializedName("name")
     val name: String
-)
+){
+    fun getSizedThumbnailUrl(width: Int, height: Int): String {
+        return imageUrl.replace("{width}", width.toString())
+            .replace("{height}", width.toString())
+    }
+}

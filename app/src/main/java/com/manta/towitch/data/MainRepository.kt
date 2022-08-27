@@ -1,7 +1,6 @@
 package com.manta.towitch.data
 
 import com.manta.towitch.common.PreferenceHelper
-import retrofit2.http.Query
 import javax.inject.Inject
 
 class MainRepository @Inject constructor(
@@ -36,5 +35,8 @@ class MainRepository @Inject constructor(
 
     suspend fun fetchGames(gameId: List<String>) =
         twitchApiService.fetchGames(appToken = preferenceHelper.twitchAppToken, gameId = gameId)
+
+    suspend fun fetchTopGames() =
+        twitchApiService.fetchTopGames(appToken = preferenceHelper.twitchAppToken)
 
 }

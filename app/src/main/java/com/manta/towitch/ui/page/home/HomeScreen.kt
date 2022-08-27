@@ -42,7 +42,7 @@ fun HomeScreen(mainViewModel: MainViewModel) {
     ) {
         item {
             Text("팔로잉", fontSize = title_tab, fontWeight = FontWeight.Bold)
-            VSpacer(dp = 50.dp)
+            VSpacer(dp = 30.dp)
         }
         stickyHeader {
             Header("생방송 채널")
