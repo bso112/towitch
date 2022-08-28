@@ -4,9 +4,9 @@ Using [Twitch Api](https://dev.twitch.tv/docs/api/), I made a twitch clone app.
 
 ## Feature
 - Twitch Sign in
-- Show user's following Broadcaster's Live stream
+- Show Live stream whoes user follow
 - Show random Live Streams
-- Show user's following Broadcasters
+- Show Broadcasters who user follow
 - Show Top popular games on twitch
 - Show Just Chatting streams
 - Show Clips
