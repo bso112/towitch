@@ -6,7 +6,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.manta.towitch.common.PreferenceHelper
-import com.manta.towitch.ui.theme.TiwtchTheme
+import com.manta.towitch.ui.theme.TowitchTheme
 import com.manta.towitch.utils.toSafe
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,7 +26,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         handleDeeplink()
         setContent {
-            TiwtchTheme {
+            TowitchTheme {
                 MainScreen(preferenceHelper)
             }
         }

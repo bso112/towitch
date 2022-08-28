@@ -32,7 +32,7 @@ private val LightColorPalette = lightColors(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TiwtchTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
+fun TowitchTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable () -> Unit) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {

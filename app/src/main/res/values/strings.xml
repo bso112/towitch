@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">tiwtch</string>
+    <string name="app_name">towitch</string>
     <string name="bottom_tab_following">팔로잉</string>
     <string name="bottom_tab_finding">찾기</string>
     <string name="bottom_tab_explore">탐색</string>
