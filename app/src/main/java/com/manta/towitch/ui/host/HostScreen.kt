@@ -28,7 +28,7 @@ import com.manta.towitch.common.HCenter
 import com.manta.towitch.common.Line
 import com.manta.towitch.common.VCenter
 import com.manta.towitch.ui.page.explore.ExploreScreen
-import com.manta.towitch.ui.page.finding.findingScreen
+import com.manta.towitch.ui.page.finding.FindingScreen
 import com.manta.towitch.ui.page.home.HomeScreen
 import com.manta.towitch.ui.page.home.MainViewModel
 import com.manta.towitch.ui.theme.*
@@ -120,7 +120,7 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
         ) { pageIndex ->
             when (pageIndex) {
                 0 -> HomeScreen(mainViewModel)
-                1 -> findingScreen()
+                1 -> FindingScreen()
                 2 -> ExploreScreen()
             }
         }

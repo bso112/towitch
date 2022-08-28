@@ -51,7 +51,7 @@ import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun findingScreen(vm: FindingViewModel = hiltViewModel()) {
+fun FindingScreen(vm: FindingViewModel = hiltViewModel()) {
     val streams = vm.streams.collectAsState()
     val recommendStream = vm.recommendedStreams.collectAsState(emptyList())
     val smallStreams = vm.smallStreams.collectAsState(emptyList())

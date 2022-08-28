@@ -20,7 +20,7 @@ fun MainScreen(preferenceHelper: PreferenceHelper) {
     }else{
         NavScreen.Home.route
     }
-    NavHost(navController = navController, startDestination =  initialRoute) {
+    NavHost(navController = navController, startDestination =  NavScreen.Login.route) {
         composable(
             NavScreen.Home.route,
             deepLinks = listOf(navDeepLink { uriPattern = "https://towitch.page.link/home" })
