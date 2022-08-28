@@ -24,6 +24,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.manta.towitch.R
+import com.manta.towitch.common.HCenter
 import com.manta.towitch.common.Line
 import com.manta.towitch.common.VCenter
 import com.manta.towitch.ui.page.explore.ExploreScreen
@@ -67,15 +68,19 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
 
     Scaffold(
         topBar = {
-            GlideImage(
-                imageModel = user.value.profileImageUrl,
-                contentScale = ContentScale.Inside,
-                modifier = Modifier
-                    .width(50.dp)
-                    .height(50.dp)
-                    .clip(CircleShape)
-                    .padding(vertical = 10.dp)
-            )
+            HCenter {
+                GlideImage(
+                    imageModel = user.value.profileImageUrl,
+                    contentScale = ContentScale.Inside,
+                    modifier = Modifier
+                        .width(50.dp)
+                        .height(50.dp)
+                        .clip(CircleShape)
+                        .padding(vertical = 10.dp)
+                )
+                Text(user.value.name)
+            }
+
         },
         bottomBar = {
             Column {
