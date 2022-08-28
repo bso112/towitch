@@ -12,7 +12,7 @@ Using [Twitch Api](https://dev.twitch.tv/docs/api/), I made a twitch clone app.
 - Show Clips
 - Show Categories
 
-> This app can't play video or chat. but just shows a thumbnail of the video. cuz Twitch API does not support it.
+> This app can't play video or show chat. but just shows a thumbnail of the video. cuz Twitch API does not support it.
 
 ## Tech Stack
 - Jetpack compose
