@@ -1,4 +1,4 @@
-> This project can't build without twitch developer settings and firebase auth settings. but you can run this app with apk file on release note.
+> This project can't build without twitch developer settings. but you can run this app with apk file on release note. if you want to build this app, you should create your own twitch app in Twitch Developer console. and set OAuth redirection URL https://towitch/home
 
 </br>
 
