@@ -35,7 +35,7 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="towitch.page.link"
+                    android:host="towitch"
                     android:scheme="https" />
             </intent-filter>
         </activity>

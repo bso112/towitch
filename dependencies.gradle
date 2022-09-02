@@ -35,11 +35,6 @@ ext.versions = [
         // debugging
         timberVersion           : '5.0.1',
 
-        //firebase
-        firebaseBom             : '30.2.0',
-        googlePlayServiceAuth   : '20.2.0',
-        googleService           : '4.3.13',
-
         //test
         junitVersion            : '4.13.2',
         androidxTestJunit       : '1.1.2-rc01',
