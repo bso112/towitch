@@ -29,7 +29,7 @@ fun MainScreen(preferenceHelper: PreferenceHelper) {
     NavHost(navController = navController, startDestination = initialRoute) {
         composable(
             NavScreen.Home.route,
-            deepLinks = listOf(navDeepLink { uriPattern = "https://towitch.page.link/home" })
+            deepLinks = listOf(navDeepLink { uriPattern = "https://towitch/home" })
         ) {
             HostScreen()
         }
