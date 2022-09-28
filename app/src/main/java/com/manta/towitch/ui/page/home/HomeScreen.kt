@@ -14,9 +14,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.manta.towitch.R
 import com.manta.towitch.common.HCenter
 import com.manta.towitch.common.HSpacer
 import com.manta.towitch.common.VSpacer
@@ -82,6 +84,7 @@ fun HomeScreen(mainViewModel: MainViewModel) {
                         GlideImage(
                             imageModel = following.profileImageUrl,
                             contentScale = ContentScale.Crop,
+                            placeHolder = painterResource(id = R.drawable.placeholder),
                             modifier = Modifier
                                 .width(50.dp)
                                 .height(50.dp)
@@ -117,6 +120,7 @@ fun StreamItem(stream: Stream) {
             GlideImage(
                 imageModel = stream.getSizedThumbnailUrl(200, 100),
                 contentScale = ContentScale.FillWidth,
+                placeHolder = painterResource(id = R.drawable.placeholder),
                 modifier = Modifier
                     .width(100.dp)
                     .height(50.dp)
@@ -145,6 +149,7 @@ fun StreamItem(stream: Stream) {
                 GlideImage(
                     imageModel = stream.userProfileImageUrl,
                     contentScale = ContentScale.Crop,
+                    placeHolder = painterResource(id = R.drawable.placeholder),
                     modifier = Modifier
                         .width(20.dp)
                         .height(20.dp)

@@ -224,6 +224,7 @@ private fun GameItem(game: Game) {
     ) {
         GlideImage(
             imageModel = game.getSizedThumbnailUrl(256, 512),
+            placeHolder = painterResource(id = R.drawable.placeholder),
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .height(150.dp)
@@ -240,6 +241,7 @@ private fun ClipItem(clip: Clip) {
             GlideImage(
                 imageModel = clip.thumbnailUrl,
                 contentScale = ContentScale.FillWidth,
+                placeHolder = painterResource(id = R.drawable.placeholder),
                 modifier = Modifier
                     .height(150.dp)
                     .fillMaxWidth()
@@ -291,6 +293,7 @@ private fun ClipItem(clip: Clip) {
         Row(Modifier.padding(horizontal = 5.dp)) {
             GlideImage(
                 imageModel = clip.broadCasterProfileImageUrl,
+                placeHolder = painterResource(id = R.drawable.placeholder),
                 contentScale = ContentScale.Inside,
                 modifier = Modifier
                     .width(30.dp)
@@ -318,6 +321,7 @@ private fun StreamItem(stream: Stream) {
         Box {
             GlideImage(
                 imageModel = stream.getSizedThumbnailUrl(1024, 512),
+                placeHolder = painterResource(id = R.drawable.placeholder),
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier
                     .height(150.dp)
@@ -358,6 +362,7 @@ private fun StreamItem(stream: Stream) {
             GlideImage(
                 imageModel = stream.userProfileImageUrl,
                 contentScale = ContentScale.Inside,
+                placeHolder = painterResource(id = R.drawable.placeholder),
                 modifier = Modifier
                     .width(30.dp)
                     .height(30.dp)
@@ -444,7 +449,7 @@ private fun DiscreteScrollView(
                 modifier = Modifier
                     .width(300.dp)
                     .height(150.dp),
-                contentScale = ContentScale.FillWidth
+                contentScale = ContentScale.FillWidth,
             ) {
 
             }

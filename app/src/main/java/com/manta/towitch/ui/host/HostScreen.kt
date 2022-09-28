@@ -72,6 +72,7 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
                 GlideImage(
                     imageModel = user.value.profileImageUrl,
                     contentScale = ContentScale.Inside,
+                    placeHolder = painterResource(id = R.drawable.placeholder),
                     modifier = Modifier
                         .width(50.dp)
                         .height(50.dp)
