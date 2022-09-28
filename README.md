@@ -6,11 +6,7 @@ Using [Twitch Api](https://dev.twitch.tv/docs/api/), I made a **twitch clone app
 
 </br>
 
-<p float="left">
-<img src="home_screen_demo.gif" alt="drawing" width="204" height="341"/>
-<img src="finding_screen_demo.gif" alt="drawing" width="204" height="341"/>
-<img src="explore_screen_demo.gif" alt="drawing" width="204" height="341"/>
-</p>
+![alt](demo.gif)
 
 ## Feature
 - Twitch Sign in
