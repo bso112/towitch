@@ -1,7 +1,5 @@
 package com.manta.towitch.ui.login
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
@@ -18,21 +16,18 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.manta.towitch.BuildConfig
 import com.manta.towitch.R
 import com.manta.towitch.common.VCenter
 import com.manta.towitch.common.VSpacer
 import com.manta.towitch.ui.main.NavScreen
 import com.manta.towitch.ui.main.Navigator
-import com.manta.towitch.ui.theme.Purple500
+import com.manta.towitch.ui.theme.twitch_purple
 import com.manta.towitch.ui.theme.White
 import com.manta.towitch.ui.theme.content1
-import java.util.*
-import kotlin.math.log
 
 @Composable
 fun LoginScreen(navigator: Navigator, loginViewModel: LoginViewModel = hiltViewModel()) {
-    Surface(Modifier.fillMaxSize(), color = Purple500) {
+    Surface(Modifier.fillMaxSize(), color = twitch_purple) {
         VCenter {
             Image(
                 painter = painterResource(id = R.drawable.twtich_logo),
@@ -47,7 +42,7 @@ fun LoginScreen(navigator: Navigator, loginViewModel: LoginViewModel = hiltViewM
                 loginViewModel.fetchTwitchAppToken()
                 navigator(NavScreen.Auth.route)
             }, shape = RoundedCornerShape(5.dp)) {
-                Text("로그인", color = Purple500, fontSize = content1, fontWeight = FontWeight.Bold)
+                Text("로그인", color = twitch_purple, fontSize = content1, fontWeight = FontWeight.Bold)
             }
         }
     }

@@ -102,7 +102,7 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
                                     pagerState.animateScrollToPage(index)
                                 }
                             },
-                            selectedContentColor = Purple500, unselectedContentColor = Black,
+                            selectedContentColor = twitch_purple, unselectedContentColor = Black,
                         ) {
                             BottomTabItem(tab = tab, isEnabled = pagerState.currentPage == index)
                         }
@@ -133,7 +133,7 @@ fun HostScreen(mainViewModel: MainViewModel = hiltViewModel()) {
 fun BottomTabItem(tab: BottomTab, isEnabled: Boolean) {
     val painter =
         if (isEnabled) painterResource(id = tab.enabledIcon) else painterResource(id = tab.disabledIcon)
-    val color = if (isEnabled) Purple500 else Black
+    val color = if (isEnabled) twitch_purple else Black
     VCenter {
         Image(
             painter = painter,

@@ -1,7 +1,6 @@
 package com.manta.towitch.ui.page.explore
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -67,14 +66,14 @@ fun ExploreScreen(vm: ExploreViewModel = hiltViewModel()) {
                             .height(40.dp)
                             .width(180.dp)
                             .padding(horizontal = 15.dp),
-                        backgroundColor = White, contentColor = Purple500,
+                        backgroundColor = White, contentColor = twitch_purple,
                     ) {
                         listOf("카테고리", "생방송 채널").forEachIndexed { index, title ->
                             Tab(selected = index == pagerState.currentPage, onClick = {
                                 scope.launch {
                                     pagerState.animateScrollToPage(index)
                                 }
-                            }, selectedContentColor = Purple500, unselectedContentColor = Black) {
+                            }, selectedContentColor = twitch_purple, unselectedContentColor = Black) {
                                 Text(
                                     title,
                                     modifier = Modifier.align(Alignment.CenterHorizontally),

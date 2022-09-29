@@ -16,7 +16,7 @@ private val DarkColorPalette = darkColors(
 )
 
 private val LightColorPalette = lightColors(
-    primary = Purple500,
+    primary = twitch_purple,
     primaryVariant = Purple700,
     secondary = Teal200
 

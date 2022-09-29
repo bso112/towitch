@@ -107,7 +107,7 @@ fun FindingScreen(vm: FindingViewModel = hiltViewModel()) {
                                 onClick = { /*TODO*/ },
                                 modifier = Modifier
                                     .background(
-                                        color = Purple500,
+                                        color = twitch_purple,
                                         shape = RoundedCornerShape(5.dp)
                                     )
                                     .width(150.dp)
@@ -149,7 +149,7 @@ fun FindingScreen(vm: FindingViewModel = hiltViewModel()) {
                     Header(
                         buildAnnotatedString {
                             append("취향 저격 ")
-                            withStyle(SpanStyle(color = Purple500)) {
+                            withStyle(SpanStyle(color = twitch_purple)) {
                                 append("카테고리")
                             }
                         }
@@ -178,7 +178,7 @@ fun FindingScreen(vm: FindingViewModel = hiltViewModel()) {
                     Header(
                         buildAnnotatedString {
                             append("추천")
-                            withStyle(SpanStyle(color = Purple500)) {
+                            withStyle(SpanStyle(color = twitch_purple)) {
                                 append(" JUST CHATTING ")
                             }
                             append("채널")
