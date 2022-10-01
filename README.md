@@ -25,7 +25,6 @@ Using [Twitch Api](https://dev.twitch.tv/docs/api/), I made a **twitch clone app
 - dagger-hilt
 - coroutine
 - retrofit
-- firebase auth
 - glide
 - deep link (for twitch auth redirection)
 
