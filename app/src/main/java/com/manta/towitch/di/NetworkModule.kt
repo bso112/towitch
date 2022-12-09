@@ -84,6 +84,4 @@ class NetworkModule {
     fun provideTwitchApiService(@TwitchApiRetrofit retrofit: Retrofit): TwitchApiService {
         return retrofit.create(TwitchApiService::class.java)
     }
-
-
 }

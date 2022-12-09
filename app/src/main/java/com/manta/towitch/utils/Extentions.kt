@@ -2,7 +2,10 @@ package com.manta.towitch.utils
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
@@ -10,12 +13,8 @@ import java.util.*
 
 fun String?.toSafe() = this ?: ""
 
-fun <T> ViewModel.stateFlow(
-    initialValue: T,
-    block: suspend FlowCollector<T>.() -> Unit
-): StateFlow<T> =
-    flow(block).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000L), initialValue)
-
+fun <T> Flow<T>.toStateFlow(viewModel: ViewModel, initialValue: T): StateFlow<T> =
+    stateIn(viewModel.viewModelScope, SharingStarted.WhileSubscribed(5000L), initialValue)
 
 suspend fun <T> Response<T>.onSuccess(callback: suspend (T) -> Unit): Response<T> {
     if (isSuccessful) {

@@ -21,9 +21,9 @@ import com.manta.towitch.common.VCenter
 import com.manta.towitch.common.VSpacer
 import com.manta.towitch.ui.main.NavScreen
 import com.manta.towitch.ui.main.Navigator
-import com.manta.towitch.ui.theme.twitch_purple
 import com.manta.towitch.ui.theme.White
 import com.manta.towitch.ui.theme.content1
+import com.manta.towitch.ui.theme.twitch_purple
 
 @Composable
 fun LoginScreen(navigator: Navigator, loginViewModel: LoginViewModel = hiltViewModel()) {

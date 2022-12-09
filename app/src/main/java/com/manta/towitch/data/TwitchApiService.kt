@@ -1,6 +1,13 @@
 package com.manta.towitch.data
 
-import com.manta.towitch.data.entity.*
+import com.manta.towitch.data.entity.BaseEntity
+import com.manta.towitch.data.entity.Category
+import com.manta.towitch.data.entity.Clip
+import com.manta.towitch.data.entity.Following
+import com.manta.towitch.data.entity.Game
+import com.manta.towitch.data.entity.Stream
+import com.manta.towitch.data.entity.Tag
+import com.manta.towitch.data.entity.User
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header

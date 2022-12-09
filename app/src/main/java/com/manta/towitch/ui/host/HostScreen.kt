@@ -3,7 +3,12 @@
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Tab
@@ -31,7 +36,11 @@ import com.manta.towitch.ui.page.explore.ExploreScreen
 import com.manta.towitch.ui.page.finding.FindingScreen
 import com.manta.towitch.ui.page.home.HomeScreen
 import com.manta.towitch.ui.page.home.MainViewModel
-import com.manta.towitch.ui.theme.*
+import com.manta.towitch.ui.theme.Black
+import com.manta.towitch.ui.theme.Gray_tag
+import com.manta.towitch.ui.theme.White
+import com.manta.towitch.ui.theme.content2
+import com.manta.towitch.ui.theme.twitch_purple
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
 

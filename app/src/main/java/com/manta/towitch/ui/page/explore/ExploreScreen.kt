@@ -2,11 +2,24 @@ package com.manta.towitch.ui.page.explore
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
+import androidx.compose.material.ExtendedFloatingActionButton
+import androidx.compose.material.FloatingActionButtonDefaults
+import androidx.compose.material.Icon
+import androidx.compose.material.Tab
+import androidx.compose.material.TabRow
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.Composable
@@ -30,7 +43,16 @@ import com.manta.towitch.common.HSpacer
 import com.manta.towitch.common.VSpacer
 import com.manta.towitch.data.entity.Game
 import com.manta.towitch.data.entity.Stream
-import com.manta.towitch.ui.theme.*
+import com.manta.towitch.ui.theme.Black
+import com.manta.towitch.ui.theme.Black_Transparent
+import com.manta.towitch.ui.theme.Red
+import com.manta.towitch.ui.theme.White
+import com.manta.towitch.ui.theme.content1
+import com.manta.towitch.ui.theme.content2
+import com.manta.towitch.ui.theme.content3
+import com.manta.towitch.ui.theme.title2
+import com.manta.towitch.ui.theme.title_tab
+import com.manta.towitch.ui.theme.twitch_purple
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.launch
 

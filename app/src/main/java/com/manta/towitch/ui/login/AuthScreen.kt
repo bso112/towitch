@@ -10,7 +10,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import com.manta.towitch.BuildConfig
-import java.util.*
 
 @Composable
 fun AuthScreen() {

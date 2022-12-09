@@ -2,16 +2,13 @@ package com.manta.towitch.ui.main
 
 import HostScreen
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
 import com.manta.towitch.common.PreferenceHelper
 import com.manta.towitch.ui.login.AuthScreen
 import com.manta.towitch.ui.login.LoginScreen
-import com.manta.towitch.utils.toSafe
 
 
 @Composable

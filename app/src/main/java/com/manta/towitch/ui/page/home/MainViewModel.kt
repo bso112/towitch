@@ -2,74 +2,46 @@ package com.manta.towitch.ui.page.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.manta.towitch.data.MainRepository
 import com.manta.towitch.data.entity.Stream
 import com.manta.towitch.data.entity.User
+import com.manta.towitch.domain.FetchFollowedStreamUseCase
+import com.manta.towitch.domain.FetchFollowingsUseCase
+import com.manta.towitch.domain.FetchStreamUseCase
+import com.manta.towitch.domain.FetchUserUseCase
 import com.manta.towitch.utils.mockUser
-import com.manta.towitch.utils.onSuccess
-import com.manta.towitch.utils.stateFlow
+import com.manta.towitch.utils.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import javax.inject.Inject
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val mainRepository: MainRepository
+    fetchUserUseCase: FetchUserUseCase,
+    fetchStreamUseCase: FetchStreamUseCase,
+    fetchFollowedStreamUseCase: FetchFollowedStreamUseCase,
+    fetchFollowingsUseCase: FetchFollowingsUseCase
 ) : ViewModel() {
 
-    val user: StateFlow<User> = stateFlow(
-        initialValue = mockUser
-    ) {
-        mainRepository.fetchUsers().onSuccess {
-            if (it.data.isNotEmpty()) {
-                emit(it.data.first())
-            }
-        }
-    }
+    val user: StateFlow<User> = fetchUserUseCase().toStateFlow(this, mockUser)
+
+    val followedStream: StateFlow<List<Stream>> = user.flatMapLatest { user ->
+        fetchFollowedStreamUseCase(user.id)
+    }.toStateFlow(this, emptyList())
+
+    val recommendedStream: StateFlow<List<Stream>> = fetchStreamUseCase().toStateFlow(this, emptyList())
 
 
-    val followedStream: StateFlow<List<Stream>> = stateFlow(initialValue = emptyList()) {
-        user.collect { user ->
-            if (user == mockUser) return@collect
-            mainRepository.fetchFollowedStreams(user.id).onSuccess { stream ->
-                val idList = stream.data.map { it.userId }
-                mainRepository.fetchUsers(idList).onSuccess { results ->
-                    stream.data.sortedBy { it.userId }
-                    results.data.sortedBy { it.id }
-                    emit(stream.data.zip(results.data)
-                        .map { it.first.copy(userProfileImageUrl = it.second.profileImageUrl) })
-                }
-            }
-        }
-    }
-
-    val recommendedStream: StateFlow<List<Stream>> = stateFlow(initialValue = emptyList()) {
-        mainRepository.fetchStreams().onSuccess { stream ->
-            val idList = stream.data.map { it.userId }
-            mainRepository.fetchUsers(idList).onSuccess { results ->
-                stream.data.sortedBy { it.userId }
-                results.data.sortedBy { it.id }
-                emit(stream.data.zip(results.data)
-                    .map { it.first.copy(userProfileImageUrl = it.second.profileImageUrl) })
-            }
-        }
-    }
-
-
-    val followings: StateFlow<List<User>> = stateFlow(initialValue = emptyList()) {
-        user.collect { user ->
-            if (user == mockUser) return@collect
-            mainRepository.fetchFollowings(user.id).onSuccess { followedList ->
-                val idList = followedList.data.map { it.id }
-                mainRepository.fetchUsers(idList).onSuccess { results ->
-                    emit(results.data)
-                }
-            }
-        }
-    }
+    val followings: StateFlow<List<User>> = user.flatMapLatest { user ->
+        if (user == mockUser) return@flatMapLatest emptyFlow()
+        fetchFollowingsUseCase(user.id)
+    }.toStateFlow(this, emptyList())
 
     val offlineFollowings: StateFlow<List<User>> =
         followedStream.combine(followings) { streamList, followings ->
