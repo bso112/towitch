@@ -2,6 +2,9 @@ package com.manta.towitch.domain
 
 import com.manta.towitch.data.MainRepository
 import com.manta.towitch.data.entity.Stream
+import com.manta.towitch.utils.ExceptionHandler
+import com.manta.towitch.utils.defaultExceptionHandler
+import com.manta.towitch.utils.onFailure
 import com.manta.towitch.utils.onSuccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
@@ -14,7 +17,7 @@ class FetchStreamUseCase @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    operator fun invoke(): Flow<List<Stream>> = flow {
+    operator fun invoke(onFailure : ExceptionHandler = defaultExceptionHandler): Flow<List<Stream>> = flow {
         mainRepository.fetchStreams().onSuccess { stream ->
             val idList = stream.data.map { it.userId }
             mainRepository.fetchUsers(idList).onSuccess { results ->
@@ -23,6 +26,6 @@ class FetchStreamUseCase @Inject constructor(
                 emit(stream.data.zip(results.data)
                     .map { it.first.copy(userProfileImageUrl = it.second.profileImageUrl) })
             }
-        }
+        }.onFailure(onFailure)
     }.flowOn(ioDispatcher)
 }

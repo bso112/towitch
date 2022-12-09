@@ -1,6 +1,9 @@
 package com.manta.towitch.domain
 
 import com.manta.towitch.data.MainRepository
+import com.manta.towitch.utils.ExceptionHandler
+import com.manta.towitch.utils.defaultExceptionHandler
+import com.manta.towitch.utils.onFailure
 import com.manta.towitch.utils.onSuccess
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.flow
@@ -12,7 +15,7 @@ class FetchClipsUseCase @Inject constructor(
     private val ioDispatcher: CoroutineDispatcher
 ) {
 
-    operator fun invoke() = flow {
+    operator fun invoke(onFailure : ExceptionHandler = defaultExceptionHandler) = flow {
         mainRepository.fetchClips("49045679").onSuccess { data ->
             val clips = data.data
             mainRepository.fetchUsers(clips.map { it.broadCasterId })
@@ -29,6 +32,6 @@ class FetchClipsUseCase @Inject constructor(
                             }
                         }
                 }
-        }
+        }.onFailure(onFailure)
     }.flowOn(ioDispatcher)
 }

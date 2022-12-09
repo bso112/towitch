@@ -9,6 +9,7 @@ import com.manta.towitch.domain.FetchStreamUseCase
 import com.manta.towitch.domain.FetchTopGamesUseCase
 import com.manta.towitch.utils.toStateFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
@@ -24,11 +25,11 @@ class FindingViewModel @Inject constructor(
 
     val streams: StateFlow<List<Stream>> = fetchStreamUseCase().toStateFlow(this, emptyList())
 
-    val recommendedStreams = streams.map { it.shuffled().take(10) }
+    val recommendedStreams: Flow<List<Stream>> = streams.map{ it.shuffled().take(10) }
 
-    val smallStreams = streams.map { it.reversed().take(10) }
+    val smallStreams: Flow<List<Stream>> = streams.map { it.reversed().take(10) }
 
-    val justcChattingStreams =
+    val justcChattingStreams: Flow<List<Stream>> =
         streams.map { it.asSequence().filter { it.gameName == "Just Chatting" }.take(10).toList() }
 
     val clips: StateFlow<List<Clip>> =

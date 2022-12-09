@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.stateIn
+import retrofit2.HttpException
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,16 +19,21 @@ fun <T> Flow<T>.toStateFlow(viewModel: ViewModel, initialValue: T): StateFlow<T>
 
 suspend fun <T> Response<T>.onSuccess(callback: suspend (T) -> Unit): Response<T> {
     if (isSuccessful) {
-        body()?.also {
-            callback(it)
+        val body = body()
+        if (body != null) {
+            callback(body)
+        } else {
+            Logger.w("response body is null!")
         }
     }
     return this
 }
 
-suspend fun <T> Response<T>.onFailure(callback: suspend (String) -> Unit): Response<T> {
+typealias ExceptionHandler = (Throwable) -> Unit
+
+suspend fun <T> Response<T>.onFailure(callback: ExceptionHandler): Response<T> {
     if (!isSuccessful) {
-        callback("[${code()}] ${message()}")
+        callback(HttpException(this))
     }
     return this
 }
